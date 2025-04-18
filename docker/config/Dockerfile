@@ -14,6 +14,7 @@ WORKDIR /app
 
 COPY ./config/main  /app
 COPY ./docker/config/entrypoint.sh  /app/entrypoint
+RUN chmod ugo+x /app/entrypoint
 
 ENTRYPOINT [ "/bin/sh", "-c" ]
 CMD ["/app/entrypoint"]

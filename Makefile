@@ -1,15 +1,18 @@
 .ONESHELL:
 MAKEFLAGS += --no-print-directory
 
-.PHONI: init pytest build-cloud-vpn build-wireguard
+ACTIVATE_LINUX:=. .venv/bin/activate
+
+.PHONI: init activate config-test docker-testexit
 
 init:
-	sudo apt update
-	sudo apt install -y gnutls-bin wireguard
-	sudo apt install -y python3 python3-venv python3-jinja2 python3-netaddr python3-yaml python3-dotenv
-	if [ ! -d .venv ]; then
-		python3 -m venv .venv
-	fi
+	@sudo apt update && sudo apt install -y gnutls-bin wireguard python3 python3-venv
+	@test -d .venv || python3 -m venv .venv
+	@$(ACTIVATE_LINUX)
+	@python -m pip install -r requirements.txt
+
+activate:
+	@$(ACTIVATE_LINUX)
 
 config-test:
 	@python3 -m unittest discover config/test test_*.py config

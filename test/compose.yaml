@@ -2,8 +2,6 @@ services:
   bind9:
     container_name: test_bind9
     image: ubuntu/bind9:9.18-24.04_edge
-    ports:
-      - "53:53/udp"
     volumes:
       - "${WORK_DIR}/${DNS_DIR}/named.conf:/etc/bind/named.conf"
       - "${WORK_DIR}/${DNS_DIR}/${DOMAIN}:/etc/bind/db.${DOMAIN}"
@@ -19,8 +17,6 @@ services:
     build:
       context: ../
       dockerfile: ./docker/wireguard/Dockerfile
-    ports:
-      - "51820:51820/udp"
     volumes:
       - "${WORK_DIR}/${WG_DIR}/conf/_servers/wg0.conf:/data/wg0.conf:ro"
     environment:
@@ -42,10 +38,6 @@ services:
       - "${WORK_DIR}/${NGINX_DIR}:/etc/nginx/conf.d"
       - "${WORK_DIR}/${SSL_DIR}/${CONFIG}/:/data/"
       - "./files/hello.html:/www/hello.html"
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
     environment:
       NGINX_HOST: "${DOMAIN}"
       NGINX_PORT: 80

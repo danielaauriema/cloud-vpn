@@ -14,7 +14,7 @@ print_header "Cloud Setup Integration Test"
 print_header "Build Images"
 
 print_section "build Cloud Config image"
-docker build --no-cache -f ../docker/config/Dockerfile -t cloud-config:test ../
+docker build -f ../docker/config/Dockerfile -t cloud-config:test ../
 
 print_section "pull and build Docker Compose images"
 docker compose pull
@@ -51,14 +51,14 @@ print_header "Start integration tests"
 #-----------------------------------------------------------------------------------------------------------------------
 
 test_label "Bind9 :: test DNS server for nginx.${DOMAIN}"
-test_assert "docker exec -it test_bind9 dig +noall +answer nginx.${DOMAIN} '@127.0.0.1' | grep -E '172.21.0.132'"
+test_assert "docker exec -t test_bind9 dig +noall +answer nginx.${DOMAIN} '@127.0.0.1' | grep -E '172.21.0.132'"
 
 #-----------------------------------------------------------------------------------------------------------------------
 # TEST NGINX
 #-----------------------------------------------------------------------------------------------------------------------
 
 test_label "Nginx :: test static site in localhost:82"
-test_assert "docker exec -it test_nginx /bin/bash -c 'curl --fail -s localhost:82 | grep hello'"
+test_assert "docker exec -t test_nginx /bin/bash -c 'curl --fail -s localhost:82 | grep hello'"
 
 #-----------------------------------------------------------------------------------------------------------------------
 # TEST WIREGUARD
@@ -68,10 +68,10 @@ test_label "Wireguard :: test Wireguard connection (ping)"
 test_assert docker exec test_client ping -q -c 1 172.21.0.1
 
 test_label "Wireguard :: test nginx connection/routing with curl:: 172.21.0.132:82"
-test_assert "docker exec -it test_client /bin/bash -c 'curl --fail -s 172.21.0.132:82 | grep hello'"
+test_assert "docker exec -t test_client /bin/bash -c 'curl --fail -s 172.21.0.132:82 | grep hello'"
 
 test_label "Wireguard :: test nginx with curl + DNS :: nginx.${DOMAIN}"
-test_assert "docker exec -it test_client /bin/bash -c 'curl --fail -s ${DOMAIN}:82| grep hello'"
+test_assert "docker exec -t test_client /bin/bash -c 'curl --fail -s ${DOMAIN}:82| grep hello'"
 
 #-----------------------------------------------------------------------------------------------------------------------
 # TEAR DOWN

@@ -24,8 +24,8 @@ jobs:
         uses: actions/checkout@v4
 
       # Unit Tests
-      - name: Run Unit Tests
-        run: make config-test
+      - name: Run Unit Tests (Config)
+        run: make init activate config-test
         shell: bash
 
       # Docker Tests
