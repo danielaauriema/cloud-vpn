@@ -1,0 +1,13 @@
+[Interface]
+PrivateKey = {{ client.pvt_key }}
+Address = {{ client.client_address }}/32
+{%- if 'dns_servers' in client %}
+DNS = {{ client.dns_servers }}
+{%- endif %}
+
+[Peer]
+PublicKey = {{ server.pub_key }}
+PresharedKey = {{ client.psk }}
+AllowedIPs = {{ client.client_allowed_ips }}
+Endpoint = {{ server.endpoint }}:{{ server.listen_port }}
+PersistentKeepalive = {{ client.persistent_keepalive }}

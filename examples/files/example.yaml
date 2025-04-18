@@ -1,0 +1,74 @@
+ssl:
+  cloud-vpn: #ca name
+    cn: Cloud VPN #common name: it´s required to create a new CA. When absent, get it from existing CA certificate
+    certs:
+      - cn: cloud-vpn.internal #common name
+        dn:  #[optional] distinguished name: default is extracted from cn. e.g. dc=cloud-vpn,dc=internal
+        organization: #[optional] same as CA common name by default
+      - cn: subdomain.cloud-vpn.internal
+  another-ca:
+    cn: Another CA
+    certs:
+      - cn: another-ca.internal
+
+dns:
+  listen_on: any
+  forwarders: #???
+  goodclients: #???
+  zones:
+    - ns_domain: "cloud-vpn.internal"
+      server_addr: 127.0.0.1
+      subdomains:
+      - name: subdomain1
+        addr: 127.0.0.1
+      - name: subdomain2
+        addr: 127.0.0.1
+    - ns_domain: "zone2.internal"
+      server_addr: "22.22.22.22"
+      subdomains:
+        - name: subdomain1
+          addr: 11.11.11.11
+        - name: subdomain2
+          addr: 22.22.22.22
+
+nginx:
+  deny_all_http:
+    template: deny_all_http
+    port: 8080
+  redirect_https:
+    template: redirect_https
+  proxy_http:
+    template: proxy_http
+    port: 8081
+    server_names: cloud-vpn.internal www.cloud-vpn.internal
+    index: index.http
+    proxy_pass: remove-server.internal:8081
+  proxy_https:
+    template: proxy_https
+    port: 8081
+    server_names: cloud-vpn.internal www.cloud-vpn.internal
+    pub_key: my-public.crt
+    pvt_key: my-private.key
+    index: index.http
+    proxy_pass: remove-server.internal:8081
+
+wireguard:
+  server_92:
+    server:
+      endpoint: "localhost"
+      listen_port: 1389
+      network_mask: 10.0.92.0/24
+    clients:
+      client_x92_1:
+        client-address: 92.92.1.1
+      client_x92_2:
+        client-address: 92.92.2.2
+  server_93:
+    server:
+      endpoint: "server-x93.net"
+      listen_port: 1389
+      network_mask: 10.0.93.0/24
+    clients:
+      - c93_a
+      - c93_b
+

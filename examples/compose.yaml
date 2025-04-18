@@ -1,0 +1,61 @@
+services:
+  bind9:
+    container_name: bind9
+    image: ubuntu/bind9:9.18-24.04_edge
+    ports:
+      - "53:53/udp"
+    volumes:
+      - "${CONFIG_WORK_DIR}/${DNS_DIR}/named.conf:/etc/bind/named.conf"
+      - "${CONFIG_WORK_DIR}/${DNS_DIR}/localhost.internal:/etc/bind/db.localhost.internal"
+      - "${CONFIG_WORK_DIR}/${DNS_DIR}/named.conf.options:/etc/bind/named.conf.options"
+    environment:
+      BIND9_USER: root
+    networks:
+      wg_dmz:
+        ipv4_address: 172.20.0.130
+
+  wireguard:
+    container_name: wireguard
+    build: ../docker/wireguard
+    ports:
+      - "51820:51820/udp"
+    volumes:
+      - "${CONFIG_WORK_DIR}/${WG_DIR}/conf/_servers/wg0.conf:/data/wg0.conf:ro"
+    environment:
+      WG__CONFIG_SOURCE: "/data/wg0.conf"
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.forwarding=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      wg_dmz:
+        ipv4_address: 172.20.0.131
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    volumes:
+      - "${CONFIG_WORK_DIR}/${NGINX_DIR}:/etc/nginx/conf.d"
+      - "${CONFIG_WORK_DIR}/${SSL_DIR}/${CONFIG}/:/data/"
+      - "./files/hello.html:/www/hello.html"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    environment:
+      - NGINX_HOST=localhost.internal
+      - NGINX_PORT=80
+    networks:
+      wg_dmz:
+        ipv4_address: 172.20.0.132
+
+networks:
+  wg_dmz:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.128/25
+          gateway: 172.20.0.129
+

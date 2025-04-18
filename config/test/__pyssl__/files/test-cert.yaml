@@ -1,0 +1,5 @@
+ssl:
+  test-cert-ca: #ca name
+    cn: Cloud VPN CA #common name: it´s required to create a new CA. When absent, get it from existing CA certificate
+    certs:
+      - cn: test-cert.internal #common name

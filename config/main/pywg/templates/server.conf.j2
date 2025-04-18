@@ -1,0 +1,18 @@
+[Interface]
+PrivateKey = {{ server.pvt_key }}
+Address = {{ server.server_address }}/32
+ListenPort = {{ server.listen_port }}
+PostUp = iptables -A FORWARD -i %i -j ACCEPT
+PostUp =  iptables -A FORWARD -o %i -j ACCEPT
+PostUp = iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -D FORWARD -i %i -j ACCEPT
+PostDown = iptables -D FORWARD -o %i -j ACCEPT
+PostDown = iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+{% for client in clients %}
+[Peer]
+#{{ client.client_name }}
+PublicKey = {{ client.pub_key }}
+PresharedKey = {{ client.psk }}
+AllowedIPs = {{ client.server_allowed_ips }}
+{% endfor %}

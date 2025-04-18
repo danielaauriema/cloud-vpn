@@ -1,0 +1,19 @@
+dns:
+  listen_on: any
+  forwarders: #???
+  goodclients: #???
+  zones:
+    - ns_domain: "cloud-vpn.internal"
+      server_addr: 127.0.0.1
+      subdomains:
+        - name: subdomain1
+          addr: 127.0.0.1
+        - name: subdomain2
+          addr: 127.0.0.1
+    - ns_domain: "zone2.internal"
+      server_addr: "22.22.22.22"
+      subdomains:
+        - name: subdomain1
+          addr: 11.11.11.11
+        - name: subdomain2
+          addr: 22.22.22.22

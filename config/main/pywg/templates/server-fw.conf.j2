@@ -1,0 +1,14 @@
+[Interface]
+PrivateKey = {{ server.pvt_key }}
+Address = {{ server.server_address }}/32
+ListenPort = {{ server.listen_port }}
+PreUp = iptables -A FORWARD -i {{ server.server_name }} -j ACCEPT
+PostDown = iptables -D FORWARD -i {{ server.server_name }} -j ACCEPT
+
+{% for client in clients %}
+[Peer]
+#{{ client.client_name }}
+PublicKey = {{ client.pub_key }}
+PresharedKey = {{ client.psk }}
+AllowedIPs = {{ client.server_allowed_ips }}
+{% endfor %}

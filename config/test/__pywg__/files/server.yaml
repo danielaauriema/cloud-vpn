@@ -1,0 +1,22 @@
+server:
+  test:
+    dns_servers: "test_dns_servers"
+    persistent_keepalive:  99
+    server_address: "test_server_address"
+    endpoint: "test_endpoint"
+    listen_port: 6789
+    iptables_forward: True
+    network_mask: "test_network_mask"
+    client_allowed_ips: "test_client_allowed_ips"
+
+servers:
+  server_94:
+    server:
+      endpoint: "server-x94.net"
+      listen_port: 1389
+      network_mask: 10.0.94.0/24
+    clients:
+      c93_a:
+        client-address: 94.94.0.2
+      c93_b:
+        client-address: 94.94.0.3

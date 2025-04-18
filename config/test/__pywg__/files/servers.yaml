@@ -1,0 +1,19 @@
+wireguard:
+  server_92:
+    server:
+      endpoint: "localhost"
+      listen_port: 1389
+      network_mask: 10.0.92.0/24
+    clients:
+      client_x92_1:
+        client-address: 92.92.1.1
+      client_x92_2:
+        client-address: 92.92.2.2
+  server_93:
+    server:
+      endpoint: "server-x93.net"
+      listen_port: 1389
+      network_mask: 10.0.93.0/24
+    clients:
+      - c93_a
+      - c93_b

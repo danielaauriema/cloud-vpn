@@ -1,0 +1,48 @@
+ssl:
+  localhost:
+    cn: localhost
+    certs:
+      - cn: localhost.internal
+
+wireguard:
+  wg0:
+    server:
+      endpoint: "127.0.0.1"
+      network_mask: 172.20.0.0/25
+      dns_servers: 172.20.0.130,8.8.8.8,8.8.4.4
+      client_allowed_ips: 172.20.0.0/24
+    clients:
+      - single_client
+
+dns:
+  listen_on: any
+  forwarders: #???
+  goodclients: #???
+  zones:
+    - ns_domain: "localhost.internal"
+      server_addr: 172.20.0.130
+      root_addr: 172.20.0.132
+      subdomains:
+      - name: nginx
+        addr: 172.20.0.132
+
+nginx:
+  default:
+    template: default
+    port: 81
+  hello:
+    template: site_http
+    port: 82
+    server_names: _
+    root: /www
+    index: hello.html
+  redirect_https:
+    template: redirect_https
+  site_https:
+    template: site_https
+    port: 443
+    server_names: localhost.internal www.localhost.internal
+    pub_key: /data/certs/localhost.internal.crt
+    pvt_key: /data/certs/localhost.internal.key
+    root: /usr/share/nginx/html
+    index: index.html index.htm

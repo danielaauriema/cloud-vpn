@@ -1,0 +1,6 @@
+{% for zone in config %}
+zone "{{ zone.ns_domain }}" {
+    type master;
+    file "/etc/bind/db.{{ zone.ns_domain }}";
+};
+{% endfor %}

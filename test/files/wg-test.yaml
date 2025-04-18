@@ -1,0 +1,48 @@
+ssl:
+  wg-test:
+    cn: wg-test
+    certs:
+      - cn: wg-test.internal
+
+wireguard:
+  wg0:
+    server:
+      endpoint: test_wireguard
+      network_mask: 172.21.0.0/25
+      dns_servers: 172.21.0.130,8.8.8.8,8.8.4.4
+      client_allowed_ips: 172.21.0.0/24
+    clients:
+      - test_client
+
+dns:
+  listen_on: any
+  forwarders: #???
+  goodclients: #???
+  zones:
+    - ns_domain: wg-test.internal
+      server_addr: 172.21.0.130
+      root_addr: 172.21.0.132
+      subdomains:
+      - name: nginx
+        addr: 172.21.0.132
+
+nginx:
+  default:
+    template: default
+    port: 81
+  hello:
+    template: site_http
+    port: 82
+    server_names: _
+    root: /www
+    index: hello.html
+  redirect_https:
+    template: redirect_https
+  site_https:
+    template: site_https
+    port: 443
+    server_names: localhost.internal www.wg-test.internal
+    pub_key: /data/certs/wg-test.internal.crt
+    pvt_key: /data/certs/wg-test.internal.key
+    root: /usr/share/nginx/html
+    index: index.html index.htm

@@ -1,0 +1,11 @@
+ssl:
+  multi-ca1:
+    cn: Multi CA1
+    certs:
+      - cn: multi-ca1.internal
+      - cn: subdomain.multi-ca1.internal
+  multi-ca2:
+    cn: Multi CA2
+    certs:
+      - cn: multi-ca2.internal
+      - cn: subdomain.multi-ca2.internal
