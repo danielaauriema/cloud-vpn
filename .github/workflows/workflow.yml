@@ -47,5 +47,5 @@ jobs:
     uses: ./.github/workflows/docker.yml
     with:
       dockerfile: ./docker/wireguard/Dockerfile
-      image_name: wireguard
+      image_name: wireguard2
     secrets: inherit
