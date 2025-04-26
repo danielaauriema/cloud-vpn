@@ -39,6 +39,7 @@ jobs:
     with:
       dockerfile: ./docker/config/Dockerfile
 #      image_name: cloud-config
+    secrets: inherit
 
 #  wireguard:
 ##    needs: test
