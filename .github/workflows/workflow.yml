@@ -42,6 +42,12 @@ jobs:
 
   cloud-config:
 #    needs: test
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
     uses: ./.github/workflows/docker.yml
     with:
       dockerfile: ./docker/config/Dockerfile
