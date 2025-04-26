@@ -32,7 +32,7 @@ jobs:
       contents: read
       packages: write
       id-token: write
-    uses: ./.github/workflows/docker.yml
+    uses: danielaauriema/cloud-utils/.github/workflows/docker-publish.yml@main
     with:
       dockerfile: ./docker/config/Dockerfile
       image_name: cloud-config
@@ -44,7 +44,7 @@ jobs:
       contents: read
       packages: write
       id-token: write
-    uses: ./.github/workflows/docker.yml
+    uses: danielaauriema/cloud-utils/.github/workflows/docker-publish.yml@main
     with:
       dockerfile: ./docker/wireguard/Dockerfile
       image_name: wireguard
