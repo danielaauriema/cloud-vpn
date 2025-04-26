@@ -10,36 +10,36 @@ on:
 
 jobs:
 
-#  test:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      # Unit Tests
-#      - name: Run Unit Tests (Config)
-#        run: make init activate config-test
-#        shell: bash
-#
-#      # Docker Tests
-#      - name: Run Docker Tests
-#        run: make docker-test
-#        shell: bash
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-#  cloud-config:
-##    needs: test
-#    permissions:
-#      contents: read
-#      packages: write
-#      id-token: write
-#    uses: ./.github/workflows/docker.yml
-#    with:
-#      dockerfile: ./docker/config/Dockerfile
-#      image_name: cloud-config
-#    secrets: inherit
+      # Unit Tests
+      - name: Run Unit Tests (Config)
+        run: make init activate config-test
+        shell: bash
+
+      # Docker Tests
+      - name: Run Docker Tests
+        run: make docker-test
+        shell: bash
+
+  cloud-config:
+    needs: test
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    uses: ./.github/workflows/docker.yml
+    with:
+      dockerfile: ./docker/config/Dockerfile
+      image_name: cloud-config
+    secrets: inherit
 
   wireguard:
-#    needs: test
+    needs: test
     permissions:
       contents: read
       packages: write
