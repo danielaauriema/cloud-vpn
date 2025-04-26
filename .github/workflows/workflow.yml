@@ -48,3 +48,4 @@ jobs:
     with:
       dockerfile: ./docker/wireguard/Dockerfile
       image_name: wireguard
+    secrets: inherit
