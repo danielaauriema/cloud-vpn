@@ -16,5 +16,5 @@ COPY ./config/main  /app
 COPY ./docker/config/entrypoint.sh  /app/entrypoint
 RUN chmod ugo+x /app/entrypoint
 
-ENTRYPOINT [ "/bin/sh", "-c" ]
+ENTRYPOINT []
 CMD ["/app/entrypoint"]

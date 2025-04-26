@@ -8,9 +8,9 @@ ENV WG_CONFIG_SOURCE="/etc/wireguard/wg0.conf"
 
 RUN ${PKG_UPDATE} && ${PKG_WIREGUARD}
 
-COPY ./docker/wireguard/entrypoint.sh /entrypoint
-RUN chmod u+x /entrypoint
+COPY ./docker/wireguard/entrypoint.sh /app/entrypoint
+RUN chmod u+x /app/entrypoint
 
-ENTRYPOINT [ "/bin/bash", "-c" ]
-CMD ["/entrypoint"]
+ENTRYPOINT []
+CMD ["/app/entrypoint"]
 
