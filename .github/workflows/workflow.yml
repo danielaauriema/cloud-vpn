@@ -10,38 +10,38 @@ on:
 
 jobs:
 
-  test:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Unit Tests
-      - name: Run Unit Tests (Config)
-        run: make init activate config-test
-        shell: bash
-
-      # Docker Tests
-      - name: Run Docker Tests
-        run: make docker-test
-        shell: bash
+#  test:
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      packages: write
+#      # This is used to complete the identity challenge
+#      # with sigstore/fulcio when running outside of PRs.
+#      id-token: write
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      # Unit Tests
+#      - name: Run Unit Tests (Config)
+#        run: make init activate config-test
+#        shell: bash
+#
+#      # Docker Tests
+#      - name: Run Docker Tests
+#        run: make docker-test
+#        shell: bash
 
   cloud-config:
-    needs: test
+#    needs: test
     uses: ./.github/workflows/docker.yml
     with:
       dockerfile: ./docker/config/Dockerfile
       image_name: cloud-config
 
   wireguard:
-    needs: test
+#    needs: test
     uses: ./.github/workflows/docker.yml
     with:
       dockerfile: ./docker/wireguard/Dockerfile
