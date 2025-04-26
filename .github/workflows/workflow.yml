@@ -38,11 +38,11 @@ jobs:
     uses: ./.github/workflows/docker.yml
     with:
       dockerfile: ./docker/config/Dockerfile
-      image_name: cloud-config
+#      image_name: cloud-config
 
-  wireguard:
-#    needs: test
-    uses: ./.github/workflows/docker.yml
-    with:
-      dockerfile: ./docker/wireguard/Dockerfile
-      image_name: wireguard
+#  wireguard:
+##    needs: test
+#    uses: ./.github/workflows/docker.yml
+#    with:
+#      dockerfile: ./docker/wireguard/Dockerfile
+#      image_name: wireguard
