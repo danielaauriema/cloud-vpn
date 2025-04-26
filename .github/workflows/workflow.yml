@@ -1,4 +1,4 @@
-name: Tests
+name: workflow
 
 on:
   push:
@@ -32,3 +32,17 @@ jobs:
       - name: Run Docker Tests
         run: make docker-test
         shell: bash
+
+  cloud-config:
+    needs: test
+    uses: ./.github/workflows/docker.yml
+    with:
+      dockerfile: ./docker/config/Dockerfile
+      image_name: cloud-config
+
+  wireguard:
+    needs: test
+    uses: ./.github/workflows/docker.yml
+    with:
+      dockerfile: ./docker/wireguard/Dockerfile
+      image_name: wireguard
