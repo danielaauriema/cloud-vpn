@@ -8,45 +8,29 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
-
-
 jobs:
 
-#  test:
-#    runs-on: ubuntu-latest
-#    permissions:
-#      contents: read
-#      packages: write
-#      # This is used to complete the identity challenge
-#      # with sigstore/fulcio when running outside of PRs.
-#      id-token: write
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      # Unit Tests
-#      - name: Run Unit Tests (Config)
-#        run: make init activate config-test
-#        shell: bash
-#
-#      # Docker Tests
-#      - name: Run Docker Tests
-#        run: make docker-test
-#        shell: bash
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Unit Tests
+      - name: Run Unit Tests (Config)
+        run: make init activate config-test
+        shell: bash
+
+      # Docker Tests
+      - name: Run Docker Tests
+        run: make docker-test
+        shell: bash
 
   cloud-config:
-#    needs: test
+    needs: test
     permissions:
       contents: read
       packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
       id-token: write
     uses: ./.github/workflows/docker.yml
     with:
@@ -54,9 +38,13 @@ jobs:
       image_name: cloud-config
     secrets: inherit
 
-#  wireguard:
-##    needs: test
-#    uses: ./.github/workflows/docker.yml
-#    with:
-#      dockerfile: ./docker/wireguard/Dockerfile
-#      image_name: wireguard
+  wireguard:
+    needs: test
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    uses: ./.github/workflows/docker.yml
+    with:
+      dockerfile: ./docker/wireguard/Dockerfile
+      image_name: wireguard
