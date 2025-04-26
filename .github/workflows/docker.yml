@@ -19,7 +19,8 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}/${{ inputs.image_name }}
+  IMAGE_NAME: ${{ github.repository }}
+  TAG: ${{ inputs.image_name }}
 
 jobs:
   docker:
@@ -70,7 +71,7 @@ jobs:
           context: .
           file: ${{ inputs.dockerfile }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.TAG }} #${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
